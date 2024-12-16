@@ -1,0 +1,19 @@
+.App-mainContainer{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.Game-Board-Container{
+    width: 80%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aqua;
+}
+.Game-Board-status{
+    width: 20%;
+    height: 100vh;
+    background-color: blue;
+}

@@ -1,0 +1,98 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    width: 90vw;
+    max-width: 400px;
+    height: 90vw;
+    max-height: 400px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #fffbec;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4rem;
+    font-family:Comic Sans MS;
+    border: 2px solid black;
+    background-color: #f4d83fa7;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    cursor: pointer;
+}
+
+.cell:hover {
+    background-color: #f4d83f;
+    transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.cell:active {
+    transform: scale(0.95); /* Pressed effect */
+}
+
+/* Animation when adding 'X' or 'O' */
+.cell.filled {
+    animation: popIn 0.4s ease;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Remove outer border */
+.board .cell:nth-child(1),
+.board .cell:nth-child(2),
+.board .cell:nth-child(3) {
+    border-top: none;
+}
+.board .cell:nth-child(1),
+.board .cell:nth-child(4),
+.board .cell:nth-child(7) {
+    border-left: none;
+}
+.board .cell:nth-child(3),
+.board .cell:nth-child(6),
+.board .cell:nth-child(9) {
+    border-right: none;
+}
+.board .cell:nth-child(7),
+.board .cell:nth-child(8),
+.board .cell:nth-child(9) {
+    border-bottom: none;
+}
+
+/* Fade in animation for the board */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .cell {
+        font-size: 3rem;
+    }
+}
