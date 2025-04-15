@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./GameBoard.css";
 import Popup from "./Popup";
-import PausePopup from "./PausePopup";
 const winningCombinations = [
   [0, 1, 2],
   [3, 4, 5],
@@ -26,10 +25,13 @@ function checkwin(newBoard) {
   }
   return false;
 }
-function GameBoard({isPausepopup,funpausepopup}) {
+function GameBoard({isreset, isPausepopup, funpausepopup }) {
   let [iswin, setwining] = useState(false);
-  let [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
+  const [board, setBoard] = useState(["", "", "", "", "", "", "", "", ""]);
   let [player, setplayer] = useState("X");
+  let [message, setmessage] = useState("");
+  let [isnomove, setnomoves] = useState(0);
+  if(isreset)setBoard(["", "", "", "", "", "", "", "", ""]);
   function handlemove(i) {
     if (board[i]) return;
     console.log(i);
@@ -40,104 +42,53 @@ function GameBoard({isPausepopup,funpausepopup}) {
     setplayer(player);
     if (checkwin(newBoard)) {
       setwining(true);
+      setnomoves(0);
+      if(isnomove%2==0)
+        message=<div className="message-conetnt">
+          <h1>Winner-Player 1</h1>
+          <h4>GAME-OVER</h4>
+        </div>;
+        else
+        message=<div className="message-conetnt">
+        <h1>Winner-Player 2</h1>
+        <h4>GAME-OVER</h4>
+      </div>;
+    } else {
+      isnomove++;
+      setnomoves(isnomove);
     }
+
   }
   return (
     <>
-      {iswin && (
+      {(iswin || isnomove === 9 || isPausepopup) && (
         <Popup
-          Popupclose={() => setwining(false)}
+          isdrawpopup={() => setnomoves(0)}
+          isPausepopup={isPausepopup}
+          Popupclose={() => {
+            setwining(false);
+            funpausepopup();
+          }}
           Popupreset={() => {
             setBoard(["", "", "", "", "", "", "", "", ""]);
             setwining(false);
-          }}
-        />
-      )}
-
-      {isPausepopup && (
-        <PausePopup
-          Popupclose={funpausepopup}
-          Popupreset={() => {
-            setBoard(["", "", "", "", "", "", "", "", ""]);
+            setnomoves(0);
             funpausepopup();
           }}
         />
       )}
-
-
       <div className="board">
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(0);
-          }}
-        >
-          {board[0]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(1);
-          }}
-        >
-          {board[1]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(2);
-          }}
-        >
-          {board[2]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(3);
-          }}
-        >
-          {board[3]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(4);
-          }}
-        >
-          {board[4]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(5);
-          }}
-        >
-          {board[5]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(6);
-          }}
-        >
-          {board[6]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(7);
-          }}
-        >
-          {board[7]}
-        </div>
-        <div
-          className="cell"
-          onClick={() => {
-            handlemove(8);
-          }}
-        >
-          {board[8]}
-        </div>
+        {board.map((value, index) => {
+          return(<div
+            className="cell"
+            style={(value == "X") ? { color: "black" } : { color: "red" }}
+            onClick={() => {
+              handlemove(index);
+            }}
+          >
+            {value}
+          </div>);
+        })}
       </div>
     </>
   );
